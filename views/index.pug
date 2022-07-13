@@ -1,0 +1,84 @@
+doctype html 
+html 
+  include ./head.pug
+
+   
+  body 
+    .container
+      .row 
+        .col-md-12
+          nav.navbar.navbar-default
+            .container-fluid
+              .collapse.navbar-collapse#bs-example-navbar-collapse-1
+                - var type = books.length && books[0].type
+                ul(class="nav navbar-nav" role="tablist")
+                  li(role="presentation" class=(type == "玄幻") && 'active')
+                    a(href="#xuanhuan" aria-controls="xuanhuan" role="tab" data-toggle="tab") 玄幻
+                  li(role="presentation" class=(type == "言情") && 'active')
+                    a(href="#yanqing" aria-controls="yanqing" role="tab" data-toggle="tab") 言情
+                  li(role="presentation" class=(type == "都市") && 'active')
+                    a(href="#dushi" aria-controls="dushi" role="tab" data-toggle="tab") 都市
+                  li(role="presentation" class=(type == "军事") && 'active')
+                    a(href="#junshi" aria-controls="junshi" role="tab" data-toggle="tab") 军事
+                  li(role="presentation" class=(type == "武侠") && 'active')
+                    a(href="#wuxia" aria-controls="wuxia" role="tab" data-toggle="tab") 武侠
+                  li(role="presentation" class=(type == "仙侠") && 'active')
+                    a(href="#xianxia" aria-controls="xianxia" role="tab" data-toggle="tab") 仙侠
+                  li(role="presentation" class=(type == "历史") && 'active')
+                    a(href="#lishi" aria-controls="lishi" role="tab" data-toggle="tab") 历史
+                form.navbar-form.navbar-right
+                  .form-group(action="/")
+                    input(type="text" class="form-control" placeholder="Search" name='search')
+                  button(type="submit" class="btn btn-default") Submit
+          table.table.table-hover 
+            thead 
+              tr 
+                th 小说名称
+                th 类型
+                th 作者
+            tbody 
+              //- tr 
+              //-   td 武炼巅峰
+              //-   td 玄幻
+              //-   td 莫默
+              case books.length
+                when 0
+                  tr 
+                    td(colspan='3') 暂时没有数据，请联系管理员
+                default 
+                  each item in books
+                    tr 
+                      td(data-oid=item._id)
+                        a(href=`/catalog?id=${item._id}`)= item.name
+                      td= item.type
+                      td= item.author
+              //- each item in books
+              //-   tr 
+              //-     td(data-oid=item._id)= item.name
+              //-     td= item.type
+              //-     td= item.author
+          nav(aria-label="Page navigation")
+            ul.pagination.pagination-lg
+      
+              li
+                a(href=(url + (page - 1)) aria-label="Previous")
+                  span(aria-hidden="true") &laquo;
+              //- 循环生成中间5个按钮
+              - for (var i = 1; i < 6; i++)
+                li.num(class=(page == i) && 'active')
+                  a(href=url + i)= i
+                 
+
+              li
+                a(href=(url + (page*1 + 1)), aria-label="Next")
+                  span(aria-hidden="false") &raquo;
+                  
+    script.
+      $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        let type = $(e.target).text()
+       
+        location.href = `/?type=${type}`
+      })
+
+
+        

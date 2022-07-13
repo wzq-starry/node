@@ -1,0 +1,21 @@
+doctype html 
+html 
+  include ./head.pug
+  
+  body 
+    .container
+      .row 
+        .col-md-12
+          h1 #{bookInfo[0].name}
+          h4 作者：#{bookInfo[0].author}
+          h4 类别：#{bookInfo[0].type}
+          h4 小说简介：#{bookInfo[0].synopsis}
+        .col-md-12 
+          table.table.table-light
+            tbody 
+              - for (var i = 0; i < chapterList.length; i += 3)
+                tr 
+                - for (j = 0; j < 3; j ++)
+                  if i + j < chapterList.length
+                    td
+                      a(href=`/read?id=${chapterList[i + j]._id}&bid=${bookInfo[0]._id}`)= chapterList[i + j].title

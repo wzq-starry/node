@@ -1,0 +1,40 @@
+doctype html 
+html 
+  include ./head.pug
+  
+
+  body(style='background: url(https://bpic.588ku.com/illus_water_img/21/01/26/c24ad00d9dacda26a6d66415fbe22f8e.jpg) no-repeat center/cover fixed')
+    .container
+      .row 
+        .col-md-10.col-md-offset-1
+          case book.length
+            when 0
+              h3(style='text-align: center;') 小说暂无更新
+              div(style='font-size: 18px; text-indent: 2em; color: red;') 请稍后重试
+            default
+              - var data = book[0]
+              
+              div(style='font-size: 18px; text-indent: 2em; padding: 70px; background-color: #faf5eb;') 
+                p 首页 &gt; #{data.book.type} &gt; #{data.book.name}
+                h3(style='text-align: center;')= data.title
+                div !{data.content}
+                
+                .ctrl(style='text-align: center; padding: 20px; font-size: 18px;')
+                  a(title="prev" href=`/read?id=${prevId}&bid=${bid}&ctrl=prev`) 
+                    span 上一章(←)
+                  a(title="chapter" href=`/catalog?id=${bid}`) 回到目录
+                  a(title="home" href='/') 回到首页
+                  a(title="next" href=`/read?id=${nextId}&bid=${bid}&ctrl=next`) 
+                    span 下一章(→)
+    script.
+      $(document).keyup(e => {
+        if (e.code === 'ArrowLeft') {
+          // jquery不能直接获取a标签跳转 要获取内部的文件标签才可以
+          $('a[title=prev] span').click()
+        }
+        
+        if (e.code === 'ArrowRight') {
+          $('a[title=next] span').click()
+        }
+
+      })
